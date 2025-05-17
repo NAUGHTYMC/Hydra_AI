@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ trader_name }} Trading AI</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="https://img.freepik.com/premium-vector/hydra-dragon-mascot-esport-gaming-logo_343694-1657.jpg" alt="Hydra Logo" class="logo">
+                <h1>{{ trader_name }} Trading Assistant</h1>
+            </div>
+            <p>Advanced AI for Market Dominance</p>
+            <div class="controls">
+                <button id="clearHistoryBtn" title="Clear conversation history">
+                    <i class="fas fa-trash-alt"></i> Clear History
+                </button>
+            </div>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+            <div class="welcome-message bot-message">
+                <h2>Welcome to {{ trader_name }} Trading AI</h2>
+                <p>I'm Shadow, your AI trading companion. I can help you with:</p>
+                <ul>
+                    <li>Technical analysis of global markets</li>
+                    <li>Entry/exit timing with price targets</li>
+                    <li>Chart pattern recognition</li>
+                    <li>Risk management strategies</li>
+                </ul>
+                <p>You can also upload chart images for visual analysis.</p>
+                <p>How can I assist with your trading today?</p>
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <label for="imageInput" class="image-upload-label" title="Upload chart image">
+                <i class="fas fa-chart-line"></i>
+            </label>
+            <input type="file" id="imageInput" accept="image/*" hidden>
+            
+            <div class="text-input-container">
+                <input type="text" id="userInput" placeholder="Enter trading query..." autocomplete="off">
+                <div id="uploadPreview" class="upload-preview">
+                    <img id="previewImage" src="" alt="Upload Preview">
+                    <button id="removeImage" title="Remove image"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            
+            <button id="sendButton" onclick="sendMessage()" disabled>
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        
+        <div class="status-bar">
+            <div id="typingIndicator" class="typing-indicator hidden">
+                <span></span><span></span><span></span>
+            </div>
+            <div class="app-info">
+                <span id="connectionStatus" class="connected">Connected</span>
+                <span id="systemTime"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Templates for message elements -->
+    <template id="userMessageTemplate">
+        <div class="message user-message">
+            <div class="message-content">
+                <div class="message-text"></div>
+                <div class="message-image hidden">
+                    <img src="" alt="User uploaded chart">
+                </div>
+            </div>
+            <div class="message-time"></div>
+        </div>
+    </template>
+    
+    <template id="botMessageTemplate">
+        <div class="message bot-message">
+            <div class="message-content">
+                <div class="message-text"></div>
+            </div>
+            <div class="message-time"></div>
+        </div>
+    </template>
+
+    <!-- Error message modal -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Error</h2>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
