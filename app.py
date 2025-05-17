@@ -20,22 +20,22 @@ load_dotenv()
 
 app = Flask(__name__)
 # Configure server-side session
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', secrets.token_hex(16))
+app.config['SECRET_KEY'] = os.environ('SECRET_KEY', secrets.token_hex(16))
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_PERMANENT'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=1)
 Session(app)
 
 # App configuration
-NAME = os.getenv("TRADER_NAME", "Hydra")
-ANALYSIS_MODEL = os.getenv("ANALYSIS_MODEL", "meta-llama/llama-4-maverick:free")
-IMAGE_MODEL = os.getenv("IMAGE_MODEL", "meta-llama/llama-4-maverick:free")
-MAX_HISTORY = int(os.getenv("MAX_HISTORY", 10))  # Maximum conversation history to maintain
+NAME = os.environ("TRADER_NAME", "Hydra")
+ANALYSIS_MODEL = os.environ("ANALYSIS_MODEL", "meta-llama/llama-4-maverick:free")
+IMAGE_MODEL = os.environ("IMAGE_MODEL", "meta-llama/llama-4-maverick:free")
+MAX_HISTORY = int(os.environ("MAX_HISTORY", 10))  # Maximum conversation history to maintain
 
 # Initialize OpenAI client
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=os.getenv("OPENROUTER_API_KEY"),
+    api_key=os.environ("OPENROUTER_API_KEY"),
 )
 
 def get_system_prompt():
@@ -111,8 +111,8 @@ def analyze_command(command, image_data=None):
         start_time = time.time()
         response = client.chat.completions.create(
             extra_headers={
-                "HTTP-Referer": os.getenv("SITE_URL", "http://localhost:5000"),
-                "X-Title": os.getenv("SITE_NAME", "Hydra Trading System"),
+                "HTTP-Referer": os.environ("SITE_URL", "http://localhost:5000"),
+                "X-Title": os.environ("SITE_NAME", "Hydra Trading System"),
             },
             model=IMAGE_MODEL if image_data else ANALYSIS_MODEL,
             messages=messages,
@@ -185,5 +185,5 @@ def health_check():
 
 if __name__ == '__main__':
     # Don't use debug=True in production
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.environ('PORT', 5000))
     app.run(debug=False, host='0.0.0.0', port=port)
